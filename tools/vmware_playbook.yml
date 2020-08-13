@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  vars:
+    - vmware_server: server
+    - vmware_username: username
+    - vmware_password: password
+  tasks:
+    - vmware_vm_info:
+        validate_certs: no
+        hostname: "{{ vmware_server }}"
+        username: "{{ vmware_username }}"
+        password: "{{ vmware_password }}"
+        #show_tag: yes
+      register: vm_lists
+
+    - debug: var=vm_lists
+
+    - name: Add tags
+      vmware_tag_manager:
+        hostname: "{{ vmware_server }}"
+        username: "{{ vmware_username }}"
+        password: "{{ vmware_password }}"
+        validate_certs: no
+        tag_names:
+          - sample_tag
+          - Category_0001:Sample_Tag_0003
+        object_name: tower.example.local
+        object_type: VirtualMachine
+        state: add
+      delegate_to: localhost

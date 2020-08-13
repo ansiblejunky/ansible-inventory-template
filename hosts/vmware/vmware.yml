@@ -1,0 +1,23 @@
+---
+plugin: vmware_vm_inventory
+strict: False
+# Override credentials using Tower credential objects
+#hostname: 'vcenter.example.com'
+#username: 'username'
+#password: 'passw0rd'
+validate_certs: False
+with_tags: True
+properties:
+- 'name'
+- 'config.name'
+- 'config.guestId'
+- 'config.uuid'
+- 'summary.runtime.powerState'
+hostnames: ['config.name']
+filters:
+- '"tower_test" in tags'
+keyed_groups: [
+  {key: 'config.guestId', separator: ''},
+  {key: 'summary.runtime.powerState', separator: ''},
+  {key: 'tags', separator: ''}
+]
