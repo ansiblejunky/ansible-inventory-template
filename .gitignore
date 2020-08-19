@@ -1,0 +1,5 @@
+# Do not version control the collections downloaded by ansible-galaxy command
+collections/ansible_collections
+
+# Others
+.vmware*
