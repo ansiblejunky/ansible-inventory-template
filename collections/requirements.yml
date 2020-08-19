@@ -1,0 +1,12 @@
+---
+# Manually install collections using the following command:
+#   cd collections; ansible-galaxy collection install -r requirements.yml -p ./ -f
+# More info can be found here: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
+
+collections:
+
+    # Ansible Community General Collection
+    # This collection has a few dependencies that will result in downloading other collections
+    # https://github.com/ansible-collections/community.general
+    - name: community.general
+
