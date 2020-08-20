@@ -16,6 +16,12 @@ Installing on Mac OS:
 brew install nmap
 ```
 
+## Collection
+
+As of Ansible 2.10, the inventory plugin is now located and managed within the [Ansible Community General Collection](https://github.com/ansible-collections/community.general). Even if you are using Ansible 2.9 you can use Ansible Collections already.
+
+The specific plugin python file used is [here](https://github.com/ansible-collections/community.general/blob/main/plugins/inventory/nmap.py).
+
 ## Enabling
 
 To use this inventory you must activate it since it's not one of the default inventory types that are loaded by Ansible.
@@ -41,12 +47,8 @@ Option 2 - Set the option in the `ansible.cfg` to explicitly enable the inventor
 enable_plugins = 'host_list', 'script', 'auto', 'yaml', 'ini', 'toml', community.general.nmap
 ```
 
-```
+When using Ansible Tower and creating the Inventory with an Inventory Source, you should additionally set the following environment variable. This is not necessary if you already enabled the plugin within the `ansible.cfg` but it helps to produce a clean job output (less pink WARNING messages) for the Inventory Source sync as it will narrow the plugins attempted. Typically you will not need all of the plugins for a specific Inventory Source. So limit it using the environment variable as shown below.
+
+```yaml
 ANSIBLE_INVENTORY_ENABLED: community.general.nmap
 ```
-
-## Collection
-
-As of Ansible 2.10, the inventory plugin is now located and managed within the [Ansible Community General Collection](https://github.com/ansible-collections/community.general). Even if you are using Ansible 2.9 you can use Ansible Collections already.
-
-The specific plugin python file used is [here](https://github.com/ansible-collections/community.general/blob/main/plugins/inventory/nmap.py).

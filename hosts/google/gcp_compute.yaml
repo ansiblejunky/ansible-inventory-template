@@ -1,5 +1,5 @@
 ---
-plugin: gcp_compute
+plugin: google.cloud.gcp_compute
 projects:
   - devopscube-262115
 auth_kind: serviceaccount

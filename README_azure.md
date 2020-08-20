@@ -12,25 +12,7 @@ The following instructions focus on Azure inventory plugin (not inventory script
 
 For Azure, see [these instructions](https://docs.microsoft.com/en-us/azure/ansible/ansible-manage-azure-dynamic-inventories).
 
-For details on configuring the inventory plugin `azure_rm.yml`, see this [page](https://docs.ansible.com/ansible/latest/plugins/inventory/azure_rm.html). Example settings:
-
-```yaml
----
-plugin: azure_rm
-cert_validation_mode: ignore
-auth_source: auto
-fail_on_template_errors: False
-keyed_groups:
-    - prefix: location
-      key: location
-    - prefix: tag_pcode
-      key: tags.pcode
-    - prefix: rg
-      key: resource_group
-    - prefix: os
-      key: os_disk.operating_system_type
-plain_host_names: yes
-```
+For details on configuring the inventory plugin `azure_rm.yml`, see this [page](https://docs.ansible.com/ansible/latest/plugins/inventory/azure_rm.html). 
 
 Azure requires [the following documented URLs](https://docs.microsoft.com/en-us/azure/azure-portal/azure-portal-safelist-urls?tabs=public-cloud) added to safe-list when behind a proxy.
 

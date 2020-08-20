@@ -1,0 +1,20 @@
+plugin: community.general.virtualbox
+# Provide a file containing the settings password (equivalent to --settingspwfile)
+#settings_password_file: /etc/virtulbox/secrets
+#query:
+#    logged_in_users: /VirtualBox/GuestInfo/OS/LoggedInUsersList
+# Create vars from jinja2 expressions. (dictionary)
+compose:
+    ansible_connection: ('indows' in vbox_Guest_OS)|ternary('winrm', 'ssh')
+    vbox_platform: ('indows' in vbox_Guest_OS) | ternary('windows', 'linux')
+# Add hosts to group based on Jinja2 conditionals. (dictionary)
+groups:
+  tower_cluster: "'tower' in (inventory_hostname)"
+# Add hosts to group based on the values of a variable. (list)
+keyed_groups:
+- key: vbox_platform
+  parent_group: platforms
+  prefix: platform
+# Toggles showing all vms vs only those currently running
+running_only: False
+strict: False

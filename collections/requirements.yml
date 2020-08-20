@@ -10,3 +10,14 @@ collections:
     # https://github.com/ansible-collections/community.general
     - name: community.general
 
+    # https://github.com/ansible-collections/azure
+    - name: azure.azcollection
+
+    # https://github.com/ansible-collections/vmware
+    - name: community.vmware
+
+    # https://github.com/ansible-collections/amazon.aws
+    - name: amazon.aws
+
+    # https://github.com/ansible-collections/google.cloud
+    - name: google.cloud

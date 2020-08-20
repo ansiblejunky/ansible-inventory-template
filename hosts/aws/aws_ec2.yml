@@ -1,4 +1,4 @@
-plugin: aws_ec2
+plugin: amazon.aws.aws_ec2
 compose:
   ansible_host: private_ip_address
   ec2_account_id: owner_id
