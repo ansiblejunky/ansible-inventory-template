@@ -20,20 +20,29 @@ brew install nmap
 
 To use this inventory you must activate it since it's not one of the default inventory types that are loaded by Ansible.
 
-When using terminal commands, you have two options.
+Notice that on the Ansible documentation it states to enable the inventory plugin you need to use `nmap` string for the plugin name. However we want to use the plugin from the Collection. This plugin is named differently `community.general.nmap` and so we need to use that instead.
+
+When using terminal commands, you have two options to enable the inventory.
 
 Option 1 - Set the environment variable before you run the ansible commands.
 
 ```shell
 # Set environment variable to activate inventory type
-export ANSIBLE_INVENTORY_ENABLED=nmap
+export ANSIBLE_INVENTORY_ENABLED=community.general.nmap
 # Run any ansible commands - for example
 ansible-inventory -i hosts/nmap/nmap.yml --list
 ```
 
+Option 2 - Set the option in the `ansible.cfg` to explicitly enable the inventory plugin. You can remove the others if you do not need them, otherwise Ansible will attempt to read the inventory files in the order from left-to-right of the list of enabled plugins.
+
+```ini
+[inventory]
+# enable inventory plugins, default: 'host_list', 'script', 'auto', 'yaml', 'ini', 'toml'
+enable_plugins = 'host_list', 'script', 'auto', 'yaml', 'ini', 'toml', community.general.nmap
+```
 
 ```
-ANSIBLE_INVENTORY_ENABLED: nmap
+ANSIBLE_INVENTORY_ENABLED: community.general.nmap
 ```
 
 ## Collection
