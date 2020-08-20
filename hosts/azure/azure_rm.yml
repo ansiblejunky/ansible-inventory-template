@@ -10,6 +10,6 @@ keyed_groups:
   key: tags.pcode
 - prefix: rg
   key: resource_group
-- prefix: os
+- prefix: platform
   key: os_disk.operating_system_type
 plain_host_names: yes
