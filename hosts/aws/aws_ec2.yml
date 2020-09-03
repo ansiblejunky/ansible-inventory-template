@@ -1,4 +1,24 @@
 plugin: amazon.aws.aws_ec2
+# Environment variable AWS_ACCESS_KEY
+#aws_access_key:
+# Environment variable AWS_PROFILE
+#aws_profile:
+# Environment variable AWS_SECRET_KEY
+#aws_secret_key:
+# Environment variable AWS_SECURITY_TOKEN
+#aws_security_token:
+# Environment variable ANSIBLE_INVENTORY_CACHE
+#cache: False
+# Environment variable ANSIBLE_CACHE_PLUGIN_CONNECTION
+#cache_connection:
+# Environment variable ANSIBLE_CACHE_PLUGIN
+#cache_plugin: memory
+# Environment variable ANSIBLE_CACHE_PLUGIN_PREFIX
+#cache_prefix: ansible_inventory_
+# Environment variable ANSIBLE_CACHE_PLUGIN_TIMEOUT
+#cache_timeout: 3600
+regions:
+  - us-east-2
 compose:
   ansible_host: private_ip_address
   ec2_account_id: owner_id
@@ -46,19 +66,17 @@ compose:
   ec2_vpc_id: vpc_id | default("")
 filters:
   instance-state-name:
-  - running
+    - running
   tag:Name: windows*
 groups:
   ec2: true
 hostnames:
-- tag:Name
-- network-interface.addresses.association.public-ip
-- dns-name
-- private-dns-name
+  - tag:Name
+  - network-interface.addresses.association.public-ip
+  - dns-name
+  - private-dns-name
 keyed_groups:
-- key: platform | default("linux") | regex_replace("[^A-Za-z0-9\_]", "_")
-  parent_group: platforms
-  prefix: platform
-regions:
-- us-west-2
+  - key: platform | default("linux") | regex_replace("[^A-Za-z0-9\_]", "_")
+    parent_group: platforms
+    prefix: platform
 use_contrib_script_compatible_sanitization: true

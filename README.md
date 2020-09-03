@@ -10,7 +10,7 @@ Below are README files with specifics on each inventory type.
 
 [VMware Inventory](README_vmware.yml)
 
-[AWS Inventory](README_aws.yml)
+[AWS EC2 Inventory](README_aws_ec2.yml)
 
 [Azure Inventory](README_azure.yml)
 
@@ -33,6 +33,14 @@ Note that an inventory **script** is different than an inventory **plugin**! As 
 
 Location of inventory plugins on Ansible Tower server:
 `/var/lib/awx/venv/awx/lib/python2.7/site-packages/awx/plugins/inventory`
+
+## List of Inventory Plugins
+
+[Plugin List](https://docs.ansible.com/ansible/latest/plugins/inventory.html#plugin-list)
+
+## Cache Plugins
+
+[Cache Plugins](https://docs.ansible.com/ansible/latest/plugins/cache.html)
 
 ## Virtual Environment
 

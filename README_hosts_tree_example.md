@@ -1,3 +1,6 @@
+# Hosts Examples
+
+The following `tree` output explains the overall hosts folder structure.
 
 ```
 ├── 000_shared_vars.yml

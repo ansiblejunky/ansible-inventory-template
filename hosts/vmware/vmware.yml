@@ -14,8 +14,8 @@ properties:
 - 'config.uuid'
 - 'summary.runtime.powerState'
 hostnames: ['config.name']
-filters:
-- '"tower_test" in tags'
+#filters:
+#- '"tower_test" in tags'
 keyed_groups: [
   {key: 'config.guestId', separator: ''},
   {key: 'summary.runtime.powerState', separator: ''},
