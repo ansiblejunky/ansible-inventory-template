@@ -1,4 +1,6 @@
 plugin: amazon.aws.aws_ec2
+
+# Authentication options
 # Environment variable AWS_ACCESS_KEY
 #aws_access_key:
 # Environment variable AWS_PROFILE
@@ -7,6 +9,8 @@ plugin: amazon.aws.aws_ec2
 #aws_secret_key:
 # Environment variable AWS_SECURITY_TOKEN
 #aws_security_token:
+
+# Cache options
 # Environment variable ANSIBLE_INVENTORY_CACHE
 #cache: False
 # Environment variable ANSIBLE_CACHE_PLUGIN_CONNECTION
@@ -17,8 +21,10 @@ plugin: amazon.aws.aws_ec2
 #cache_prefix: ansible_inventory_
 # Environment variable ANSIBLE_CACHE_PLUGIN_TIMEOUT
 #cache_timeout: 3600
+
 regions:
   - us-east-2
+
 compose:
   ansible_host: private_ip_address
   ec2_account_id: owner_id
@@ -64,19 +70,26 @@ compose:
   ec2_tag_Name: tags.Name
   ec2_virtualization_type: virtualization_type
   ec2_vpc_id: vpc_id | default("")
+
+# Full list of filters are found documented here
+# https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-instances.html
 filters:
   instance-state-name:
     - running
-  tag:Name: windows*
+  tag:application: ansible
+
 groups:
   ec2: true
+
 hostnames:
   - tag:Name
   - network-interface.addresses.association.public-ip
   - dns-name
   - private-dns-name
+
 keyed_groups:
   - key: platform | default("linux") | regex_replace("[^A-Za-z0-9\_]", "_")
     parent_group: platforms
     prefix: platform
+
 use_contrib_script_compatible_sanitization: true

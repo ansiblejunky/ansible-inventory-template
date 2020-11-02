@@ -1,14 +1,6 @@
 # VMware Inventory
 
-Repo for testing the VMware dynamic inventory plugin for Ansible Core and Ansible Tower
-
-To test the plugin run the command:
-
-```shell
-ansible-inventory -i vmware.yml --graph
-```
-
-The plugin was ripped from the Ansible Collections for VMware and then the defined plugin `name` inside the code was changed so that it can live and work inside a non-collection repo.
+This document covers the configuration of the VMware dynamic inventory within Ansible Tower.
 
 ## References
 
@@ -18,7 +10,7 @@ The plugin was ripped from the Ansible Collections for VMware and then the defin
 
 [Quick Filters Available for vSphere Objects](https://docs.vmware.com/en/VMware-vSphere/6.5/com.vmware.vsphere.vcenterhost.doc/GUID-2B6A1637-384D-4597-B453-B575F0ECD8A7.html)
 
-## Issues
+## Known Issues
 
 Ansible Tower is only able to detect IP from one of the two interfaces in Vmware. It always fetches the first Interface IP address and hence the desired IP is not getting fetched.
 [While Using Vmware Dynamic Inventory in Ansible Tower, How do I Select The Desired Interface IP for VMware Host Having Multiple Interfaces?](https://access.redhat.com/solutions/3701361)
@@ -27,7 +19,7 @@ Ansible Tower is only able to detect IP from one of the two interfaces in Vmware
 
 For VMware, see [these instructions](https://docs.ansible.com/ansible/latest/scenario_guides/vmware_scenarios/vmware_inventory.html).
 
-Below are the 3 possible directions for configuring dynamic inventory for VMware. The recommendation is to use the `vmware_vm_inventory.py` within the Ansible VMware Collection since this supports filtering, tags, and is the latest code.
+Below are the 3 possible directions for configuring dynamic inventory for VMware. The recommendation is to use the Inventory Plugin (`vmware_vm_inventory.py`) within the Ansible VMware Collection since this is the latest version that supports filtering, tags, and filtering by tags, etc.
 
 Quick Filters Available for vSphere Objects
 https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.vcenterhost.doc/GUID-2B6A1637-384D-4597-B453-B575F0ECD8A7.html
@@ -55,7 +47,19 @@ https://github.com/vmware/pyvmomi-community-samples/tree/master/samples
 Red Hat internal vCenter information
 https://mojo.redhat.com/docs/DOC-115645
 
-### VMware vCenter (Ansible Tower)
+## Misc
+
+Repo for testing the VMware dynamic inventory plugin for Ansible Core and Ansible Tower
+
+To test the plugin run the command:
+
+```shell
+ansible-inventory -i vmware.yml --graph
+```
+
+The plugin was ripped from the Ansible Collections for VMware and then the defined plugin `name` inside the code was changed so that it can live and work inside a non-collection repo.
+
+## VMware vCenter (Ansible Tower)
 
 Selecting the `VMware vCenter` option for the `Source` field on an Inventory Source object in Ansible Tower is actually going to call a version of the `Inventory Script` that comes with Ansible Tower. 
 
@@ -403,9 +407,16 @@ https://github.com/ansible/vcenter-test-container
 Quay container image for simulator with Flask:
 https://quay.io/repository/ansible/vcenter-test-container
 
-### VMware module support team
+### Support
 
-Abhijeet Kasurde
+For any issues related to the VMware Ansible modules, please create a Github issue against the correct repo. This might be the [ansible repo](https://github.com/ansible/ansible) or the newer [VMware collection repo](https://github.com/ansible-collections/vmware).
+
+From Red Hat, we have the following people who contribute and fix issues for the VMware modules:
+
+- [Abhijeet Kasurde](http://akasurde.github.io/)
+- [Gonéri Le Bouder](https://github.com/goneri)
+
+These are the [contributors](https://github.com/ansible-collections/vmware/graphs/contributors) for the VMware collection repo.
 
 ### VMware pyvmomi community samples - filtering
 
@@ -419,5 +430,5 @@ wget https://github.com/vmware/pyvmomi-community-samples/blob/master/samples/fil
 wget https://raw.githubusercontent.com/vmware/pyvmomi-community-samples/master/samples/tools/cli.py
 <edit filter_vms.py and change the import of `cli` to `import cli` so it loads local version>
 # run the filter script
-python filter_vms.py -s vmware.pnq.cee.redhat.com -o 443 -u satadmin@vsphere.local -p Access@gis1 -n config.name -v romesh
+python filter_vms.py -s vmware.example.com -o 443 -u admin@vsphere.local -p password -n config.name -v romesh
 ```

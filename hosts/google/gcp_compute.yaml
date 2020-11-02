@@ -1,4 +1,5 @@
 ---
+# Example found at https://devopscube.com/ansible-dymanic-inventry-google-cloud/
 plugin: google.cloud.gcp_compute
 projects:
   - devopscube-262115

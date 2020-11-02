@@ -1,21 +1,33 @@
 ---
 plugin: community.vmware.vmware_vm_inventory
 strict: False
+
 # Override credentials using Tower credential objects
 #hostname: 'vcenter.example.com'
 #username: 'username'
 #password: 'passw0rd'
 validate_certs: False
+
+# Using tags from VMware we need to do the following:
+# - `with_tags` must be enabled
+# - vsphere automation sdk must be installed within python virtual environment 
 with_tags: True
+
+# Enabled properties that can be used in other expressions in this config
+# 
 properties:
 - 'name'
 - 'config.name'
 - 'config.guestId'
 - 'config.uuid'
 - 'summary.runtime.powerState'
+- 'config'
 hostnames: ['config.name']
-#filters:
+filters:
 #- '"tower_test" in tags'
+- summary.runtime.powerState == 'poweredOff'
+
+#TODO: create platform_windows and platform_linux groups
 keyed_groups: [
   {key: 'config.guestId', separator: ''},
   {key: 'summary.runtime.powerState', separator: ''},
