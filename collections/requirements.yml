@@ -25,4 +25,4 @@ collections:
 
     # https://github.com/ansible-collections/google.cloud
     - name: google.cloud
-      version: v1.0.1
+      version: 1.0.1
