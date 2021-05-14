@@ -1,6 +1,7 @@
 ---
 - hosts: all
   gather_facts: false
+  connection: local
 
   tasks:
   - command: "ping -i 0.2 -w 1 {{ inventory_hostname }}"
