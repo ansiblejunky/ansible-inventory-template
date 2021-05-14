@@ -1,6 +1,8 @@
 # Hosts Examples
 
-The following `tree` output explains the overall hosts folder structure.
+The following `tree` output explains the overall `hosts` folder structure.
+
+azure/dev/
 
 ```
 ├── 000_shared_vars.yml

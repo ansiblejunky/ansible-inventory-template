@@ -87,9 +87,16 @@ hostnames:
   - dns-name
   - private-dns-name
 
+# Keyed group name will become: [prefix] + [key] + [separator] + [value]
+# key = reference instance key; you may use jinja filter functions against it as well
+# parent_group = create the new group under this parent group
+# prefix = prefix the group name with this string
+# separator = characters/string to use to separate key/value pair
 keyed_groups:
   - key: platform | default("linux") | regex_replace("[^A-Za-z0-9\_]", "_")
     parent_group: platforms
     prefix: platform
-
+  - key: tags['companyname:tagname']
+    prefix: tags_tagname_
+    separator: ''
 use_contrib_script_compatible_sanitization: true

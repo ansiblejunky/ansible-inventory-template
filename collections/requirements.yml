@@ -3,6 +3,9 @@
 #   cd collections; ansible-galaxy collection install -r requirements.yml -p ./ -f
 # More info can be found here: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
 
+# IMPORTANT: Ansible Tower 3.7 does not recognize `collections:` section in the `roles/requirements.yml` file
+# so it needs to be defined here.
+
 collections:
 
     # Ansible Community General Collection
