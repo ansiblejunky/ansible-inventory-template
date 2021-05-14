@@ -12,7 +12,7 @@ collections:
     # This collection has a few dependencies that will result in downloading other collections
     # https://github.com/ansible-collections/community.general
     - name: community.general
-      version: 3.0.2
+      version: 2.5.2
 
     # https://github.com/ansible-collections/azure
     - name: azure.azcollection
