@@ -24,6 +24,7 @@ plugin: amazon.aws.aws_ec2
 
 regions:
   - us-east-2
+  - us-east-1
 
 compose:
   ansible_host: private_ip_address
