@@ -3,3 +3,5 @@ collections/ansible_collections
 
 # Others
 .vmware*
+
+__pycache__
