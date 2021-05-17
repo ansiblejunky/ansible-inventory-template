@@ -27,7 +27,7 @@ regions:
   - us-east-1
 
 compose:
-  ansible_host: private_ip_address
+  ansible_host: public_ip_address
   ec2_account_id: owner_id
   ec2_ami_launch_index: ami_launch_index | string
   ec2_architecture: architecture
