@@ -12,16 +12,17 @@ collections:
     # This collection has a few dependencies that will result in downloading other collections
     # https://github.com/ansible-collections/community.general
     # NOTE: nmap plugin broken starting at v2.5.2 https://github.com/ansible-collections/community.general/issues/2512
+    # So reverted back to version 2.5.1 for now. Testing the latest 3.6.0 currently.
     - name: community.general
-      version: 2.5.1
+      version: 3.6.0
 
     # https://github.com/ansible-collections/azure
     - name: azure.azcollection
-      version: 1.6.0
+      version: 1.9.0
 
     # https://github.com/ansible-collections/vmware
     - name: community.vmware
-      version: 1.10.0
+      version: 1.14.0
 
     # https://github.com/ansible-collections/amazon.aws
     - name: amazon.aws
