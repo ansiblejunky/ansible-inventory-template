@@ -10,34 +10,26 @@ The `README_xxxx.md` files exist at the root level with detailed explanations on
 
 There are 2 main goals for this repository:
 
-- Act as config management database (CMDB) where Ansible variables can be defined for various platforms, devices, environments, etc which are then used by the triggered Playbooks and Roles
-- Act as inventory configuration
+- Act as config management database (CMDB) where Ansible variables can be defined for various platforms, devices, environments, and so on. These can then easily be used by any Playbooks and Roles.
+- Act as inventory management and source of truth
 
 ## Inventory Structure
 
-In this repo the `hosts` folder structure has been designed to allow support of a hybrid environment where we have multiple platforms and multiple sources of truth for various devices and device types.  It is important to understood before building your own inventory structure.
+In this repo the `hosts` folder structure has been designed to allow support of a hybrid environment where we have multiple platforms and multiple sources of truth for various devices and device types.  There are many ways to structure this information, but this is just one possible way to consider.
 
-### Central Config Management (CMDB)
+## Enabling Inventory Plugins
 
+By default Ansible has a set of inventory plugins that it uses to detect and understand your inventory files. It performs these in the order you specify. You can find the default set of inventory plugins from the documentation [INVENTORY_ENABLED](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#inventory-enabled). Below is an example of the default setting in `ansible.cfg`:
 
-### Starting Point
-
-Ansible starts loading variables at the defined starting point which is set by telling Ansible the location of your inventory file(s).
-
-### Group Vars - Files or Folders
-
-Ansible always starts with an inventory.
-
-Ansible supports loading group variables from a file named `mygroup.yml` or it can load any files that exist within a folder with the same group name `mygroup`. 
-
-### Symbolic Links
-
-Variable precidence and ascii-betical order.
-https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable
-
+`ansible.cfg`
+```yaml
+[inventory]
+enable_plugins = host_list, script, auto, yaml, ini, toml
 ```
-ln -s hosts/000_shared_vars.yml hosts/aws/group_vars/all/
-```
+
+Essentially Ansible will read the inventory file or folder you provided and use `host_list` plugin first to determine if this plugin understands the file(s) you provided. If it does, great, and Ansible stops there. If it returns failure, then Ansible moves on to the next plugin in the defined list `script` which attempts to just call a python script and get a returned JSON structure. This process continues until hopefully one of the plugins works. If none of them work, it results in a warning and Ansible cannot read the inventory. If it succeeds, then it loads that inventory file or structure.
+
+So when we want to use an inventory plugin that is not yet listed in this setting we can simply add the name to the end of the list - or we can shorten the list and remove plugin names we will never use (making Ansible run a little faster and eliminating any unnecessary warnings as it traverses and attempts to use each plugin listed in the order).
 
 ## Plugins vs Scripts
 
@@ -46,23 +38,52 @@ Note that an inventory **script** is different than an inventory **plugin**! As 
 Location of inventory plugins on Ansible Tower server:
 `/var/lib/awx/venv/awx/lib/python2.7/site-packages/awx/plugins/inventory`
 
-## Inventory Plugins
-
 [Plugin List](https://docs.ansible.com/ansible/latest/plugins/inventory.html#plugin-list)
 
-## Cache Plugins (optional)
+## Group Variables
 
-[Cache Plugins](https://docs.ansible.com/ansible/latest/plugins/cache.html)
+Ansible starts loading variables at the defined starting point which is set by telling Ansible the location of your inventory file(s). For example, running the command `ansible-playbook -i hosts/aws/ playbook.yml` will result in Ansible looking into the `hosts/aws/` folder for something that looks like an inventory file/script/plugin/etc.
+
+Ansible always starts with an inventory.
+
+Ansible supports loading group variables from a file named `mygroup.yml` or it can load any files that exist within a folder with the same group name `mygroup`.
+
+## Symbolic Links
+
+It's useful to understand variable precidence and the fact that Ansible loads group/host variable files in the ascii-betical order based on filename. For more information read [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable).
+
+Using the above information allows us to additionally use symbolic links within our repository to access shared variables. These are variables/facts that apply across multiple platforms or environments but we want to maintain only 1 variable file (not duplicated for each environment).
+
+To create the symbolic link:
+
+```
+touch hosts/000_shared_vars.yml
+ln -s hosts/000_shared_vars.yml hosts/aws/group_vars/all/
+```
+
+For examples use the following article: [How to Manage Multistage Environments with Ansible](https://www.digitalocean.com/community/tutorials/how-to-manage-multistage-environments-with-ansible).
 
 ## Collections
 
-https://github.com/ansible/ansible/blob/devel/lib/ansible/config/ansible_builtin_runtime.yml
+This repository uses `collections/requirements.yml` to define the dependent Ansible collections that are needed for the inventory plugins. Ansible Tower comes with some inventory plugins but this is only specific versions at the time of the release of Ansible Tower. If you want to use the latest code, reference and use the specific Ansible Collection that holds the inventory plugin of your choice.
 
-## Python Virtual Environment
+## Dependencies
 
-To install special requirements for these inventory plugins it is recommended to create a custom python virtual environment on the Ansible Control Node or Ansible Tower nodes.
+To install special requirements/dependencies for these inventory plugins it is recommended to create a custom `python virtual environment` on the Ansible Control Node or Ansible Tower nodes. Reference the inventory plugin for specific dependencies.
 
-## Node Count
+## Cache Plugins (optional)
+
+Additionally consider using `cache plugins`. The default behavior for Ansible playbooks is to store facts in memory during the run of the playbook. However, you can store/cache facts using various mechanisms. Enable the proper plugin as you wish. 
+
+[Cache Plugins](https://docs.ansible.com/ansible/latest/plugins/cache.html)
+
+## Playbooks
+
+### playbook_tower_virtualenv.yml
+
+Prepare and manage your Ansible Tower python virtual environment using this playbook. Add dependencies to it as needed for your inventory plugins or scripts.
+
+### playbook_inventory_count.yml
 
 To get a count of all returned target nodes, use the following commands. This can help you determine the Ansible Tower license you need to purchase. Be sure to take into account some level of growth.
 
@@ -82,6 +103,8 @@ AWX_TASK_ENV['https_proxy']: "http://proxy.example.net:8098/"
 AWX_TASK_ENV['no_proxy']: "127.0.0.1,localhost"
 ```
 
+TODO: The problem with doing it this way is that the proxy settings are globally set. This means it applies for any job templates.
+
 ## Author and Licensing
 
 John Wadleigh
@@ -98,3 +121,7 @@ John Wadleigh
 [Ansible - Developer Guide - Developing dynamic inventory](https://docs.ansible.com/ansible/latest/dev_guide/developing_inventory.html)
 
 [Alan Coding - Examples and counter-examples of Ansible inventory files](https://github.com/AlanCoding/Ansible-inventory-file-examples)
+
+[Mapping modules to collections](https://github.com/ansible/ansible/blob/devel/lib/ansible/config/ansible_builtin_runtime.yml)
+
+[Digital Ocean - How to Manage Multistage Environments with Ansible](https://www.digitalocean.com/community/tutorials/how-to-manage-multistage-environments-with-ansible)

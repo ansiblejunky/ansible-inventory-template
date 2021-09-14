@@ -1,6 +1,6 @@
 # Red Hat Satellite
 
-[foreman – foreman inventory source](https://docs.ansible.com/ansible/latest/plugins/inventory/foreman.html)
+[theforeman.foreman.foreman – Foreman inventory source](https://docs.ansible.com/ansible/latest/collections/theforeman/foreman/foreman_inventory.html)
 
 Configuration entries for each entry type have a low to high priority order. For example, a variable that is lower in the list will override a variable that is higher up.
 

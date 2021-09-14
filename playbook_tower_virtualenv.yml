@@ -1,0 +1,141 @@
+---
+- name: Create virtualenv on all Tower nodes (instance and isolated)
+  hosts: all:!database*
+  gather_facts: false
+
+  # For more information see this:
+  # https://docs.ansible.com/ansible-tower/latest/html/upgrade-migration-guide/virtualenv.html
+  # How Can I Use Virtual Environment with Python3 on RHEL 7.7+ for Ansible Tower?
+  # https://access.redhat.com/solutions/4371201
+
+  vars:
+  # Define tower authentication
+  - tower_host: "https://tower.example.com"
+  - tower_url: "https://tower.example.com/api/v2/"
+  - tower_username: "admin"
+  - tower_password: "{{ admin_password }}"
+
+  # Define system packages, such as kerberos or other supporting packages
+  - tower_system_packages:
+    - gcc
+    - python3-devel
+    - krb5-devel
+    - krb5-libs
+    - krb5-workstation
+    - jq
+    - git
+    - tree
+
+  # Define virtual environment
+  - virtualenv_name: "custom"
+  - virtualenv_base: "/var/lib/awx/venv/"
+  - virtualenv_path: "{{ virtualenv_base }}{{ virtualenv_name }}"
+  - virtualenv_command: "/usr/local/bin/virtualenv"
+  - virtualenv_python_dependencies:
+      # Base required packages - `psutil` is required to properly run playbooks (eg., fact gathering)
+      - psutil
+      # Add Ansible Engine *only if* you want to use a different version
+      - 'ansible == 2.9.20'
+
+      # Windows required python packages
+      # https://docs.ansible.com/ansible/latest/user_guide/windows_winrm.html#installing-the-kerberos-library
+      - pywinrm
+      - pywinrm[kerberos]
+  
+      # VMware required python packages
+      - pyvmomi
+      - 'git+https://github.com/vmware/vsphere-automation-sdk-python.git'
+
+      # AWS required python packages
+      - boto3
+      - botocore
+  # Enable Tower objects for using virtual environment
+  # Supported objects: organizations, projects, inventory_sources, job_templates
+  # Enable virtual environment at organization level means its available for all objects associated to that org
+  - virtualenv_tower_objects:
+      -
+        type: 'organizations'
+        id: 1
+
+  tasks:
+  
+  - name: Ensure system packages are installed
+    package:
+      name: "{{ tower_system_packages }}"
+      state: present
+
+  - name: Ensure virtualenv directory exists
+    file:
+      path: "{{ virtualenv_base }}"
+      state: directory
+      mode: 0755
+    become: true
+
+  - name: Install virtualenv via pip
+    pip:
+      name: virtualenv
+      executable: pip3
+    become: true
+
+  - name: Ensure virtualenv is created and upgrade basic packages
+    pip:
+      name:
+        - pip
+        - wheel
+        - setuptools
+      virtualenv: "{{ virtualenv_path }}"
+      state: latest
+      virtualenv_python: python3
+      virtualenv_command: "{{ virtualenv_command }}"
+      # Remove this when installing custom ansible version
+      virtualenv_site_packages: yes
+    become: true
+
+  - name: Install python packages into virtualenv
+    pip:
+      name: "{{ virtualenv_python_dependencies }}"
+      virtualenv: "{{ virtualenv_path }}"
+      state: present
+      virtualenv_python: python3
+    become: true
+
+  # NOTE: pip install can produce an error referencing `BackendUnavailable`
+  # In this case we need to use a special argument `--no-use-pep517` to install the python modules
+  # https://github.com/pypa/pip/issues/6164
+  # - name: Install special python modules without using pep517
+  #   pip:
+  #     name: ntc-templates
+  #     extra_args: --no-use-pep517
+  #     umask: '0022'
+  #     state: present
+  #     virtualenv: "{{ virtualenv_path }}"
+  #     virtualenv_python: python3
+
+  # NOTE: Not sure we need this anymore since we add venv to existing path
+  # - name: Enable virtual environment in Ansible Tower
+  #   tower_settings:
+  #     name: "CUSTOM_VENV_PATHS"
+  #     value:
+  #       - "{{ virtualenv_base }}"
+  #     tower_host: "{{ tower_host }}"
+  #     tower_username: "{{ tower_username }}"
+  #     tower_password: "{{ tower_password }}"
+  #     validate_certs: False
+  #   register: _testing_settings
+  #   delegate_to: localhost
+  #   run_once: True
+
+  # - name: Assign virtualenv to objects
+  #   uri:
+  #     url: '{{ tower_url }}{{ item.type }}/{{ item.id }}/'
+  #     method: PATCH
+  #     body_format: json
+  #     body: >
+  #       { "custom_virtualenv": "{{ virtualenv_path }}" }
+  #     force_basic_auth: yes
+  #     user: "{{ tower_username }}"
+  #     password: "{{ tower_password }}"
+  #     validate_certs: false
+  #   loop: "{{ tower_objects }}"
+  #   delegate_to: localhost
+  #   run_once: True
