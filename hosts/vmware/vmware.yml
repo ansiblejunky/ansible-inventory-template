@@ -25,7 +25,7 @@ properties:
 hostnames: ['config.name']
 filters:
 #- '"tower_test" in tags'
-- summary.runtime.powerState == 'poweredOff'
+- summary.runtime.powerState == 'poweredOn'
 
 #TODO: create platform_windows and platform_linux groups
 keyed_groups: [

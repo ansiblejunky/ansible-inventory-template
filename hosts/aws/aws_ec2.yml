@@ -27,6 +27,7 @@ regions:
   - us-east-1
 
 compose:
+  # Use 'public_ip_address' for demo purposes but 'private_ip_address' normally
   ansible_host: public_ip_address
   ec2_account_id: owner_id
   ec2_ami_launch_index: ami_launch_index | string

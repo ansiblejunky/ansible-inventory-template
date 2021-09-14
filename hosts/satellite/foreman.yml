@@ -3,3 +3,18 @@ url: http://localhost:2222
 user: ansible-tester
 password: secure
 validate_certs: False
+
+want_hostcollections: True
+want_facts: True
+
+# How do I Include/Exclude Hosts from Getting Imported to Ansible Tower When Using Satellite 6 Inventory
+# https://access.redhat.com/solutions/2777811
+# The `host_filters` requires a string constructed exactly the same way you formulate searches in Satellite itself
+# So navigate to Satellite and go to where you search for hosts - there's a field to allow searching using regex/tags/etc
+# https://satallite.example.com/hosts?search=host_collection+~+monthly-patch-%2A-soa-grp-%2A&page=1
+# Once that search works, copy that text and use it here in the `host_filters` parameter.
+
+# Example of a filter specification
+#host_filters: 'host_collection = "monthly-patch-dev-soa-grp-1"'
+# Example of using wild-card filtering
+host_filters: 'host_collection ~ monthly-patch-*-soa-grp-*'
