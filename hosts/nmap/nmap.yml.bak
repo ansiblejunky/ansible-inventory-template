@@ -1,0 +1,29 @@
+# Inventory plugin type
+plugin: community.general.nmap
+# Invalid entries do not cause a fatal error and will be skipped
+strict: False
+# Network IP or range of IPs to scan, you can use a simple range (10.2.2.15-25) or CIDR notation.
+address: 192.168.1.0/24
+# list of addresses to exclude
+exclude:
+    - '192.168.1.0'
+# Enable/disable scanning for open ports; poor performance when scanning all ports
+ports: False
+
+# At least one of ipv4 or ipv6 is required to be True, both can be True, but they cannot both be False.
+# Use IPv4 type addresses
+ipv4: True
+# Use IPv6 type addresses
+ipv6: False
+
+# # Create vars from jinja2 expressions. (dictionary)
+# compose:
+#     open_ports_exist: "{{ ports | count }}"
+# # Add hosts to group based on Jinja2 conditionals (dictionary)
+# groups:
+#     'ports_open': "{{ ports is defined }}"
+# # Add hosts to group based on the values of a variable. (list)
+# keyed_groups:
+# - key: ports | default("none")
+#   parent_group: ports
+#   prefix: port

@@ -105,6 +105,14 @@ AWX_TASK_ENV['no_proxy']: "127.0.0.1,localhost"
 
 TODO: The problem with doing it this way is that the proxy settings are globally set. This means it applies for any job templates.
 
+## Debugging
+
+When Ansible Tower synchronizes an Inventory Source, it actually runs a job. The job creates a temporary folder where it calls the `ansible-inventory` command to use the inventory plugin/script, get returned data, and import this data into Ansible Tower. If this fails for some reason and it's difficult to understand the root cause, then it may be easiest to simply run the same command from the terminal in the same folder Ansible Tower uses. However we need to tell Ansible Tower to stop cleaning up these temporary folders.
+
+Disable Ansible Tower to remove temporary folders for manual analysis after the jobs has failed. The temporary directory `/tmp/awx_JOBID_xxxxx` that is created during job run are automatically removed after the job completion. By setting `AWX_CLEANUP_PATHS=False` we can force that temporary runtime directory to persist after the job run for if further analysis/debug is required.
+
+https://access.redhat.com/solutions/5688351
+
 ## Author and Licensing
 
 John Wadleigh
