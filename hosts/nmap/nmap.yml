@@ -1,5 +1,17 @@
 plugin: community.general.nmap
 strict: False
 address: 192.168.1.0/24
-ports: False
+exclude:
+    - '192.168.1.0'
 ipv4: True
+
+# Requires a lot more time to scan ports and build groups
+ports: True
+compose:
+    open_ports_exist: "{{ ports | count }}"
+groups:
+    'ports_open': "{{ ports is defined }}"
+keyed_groups:
+- key: ports | default("none")
+  parent_group: ports
+  prefix: port

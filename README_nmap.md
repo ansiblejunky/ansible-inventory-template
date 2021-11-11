@@ -2,7 +2,7 @@
 
 ## Requirements
 
-Install nmap on the machine where you run Ansible.
+Install nmap on the machine where you run Ansible. This might be from Ansible Tower, in which case you need to install it on all nodes.
 
 Installing on RHEL/CentOS:
 
@@ -21,6 +21,8 @@ brew install nmap
 As of Ansible 2.10, the inventory plugin is now located and managed within the [Ansible Community General Collection](https://github.com/ansible-collections/community.general). Even if you are using Ansible 2.9 you can use Ansible Collections already.
 
 The specific plugin python file used is [here](https://github.com/ansible-collections/community.general/blob/main/plugins/inventory/nmap.py).
+
+The supported parameters are documented [here](https://docs.ansible.com/ansible/latest/collections/community/general/nmap_inventory.html).
 
 ## Enabling
 
@@ -51,4 +53,40 @@ When using Ansible Tower and creating the Inventory with an Inventory Source, yo
 
 ```yaml
 ANSIBLE_INVENTORY_ENABLED: community.general.nmap
+```
+
+## Parameters
+
+The following parameters and example values are available for the `nmap` plugin. [Here](https://docs.ansible.com/ansible/latest/collections/community/general/nmap_inventory.html) is the comprehensive list of those parameters.
+
+```yaml
+# Inventory plugin type
+plugin: community.general.nmap
+# Invalid entries do not cause a fatal error and will be skipped
+strict: False
+# Network IP or range of IPs to scan, you can use a simple range 10.2.2.15-25 or CIDR notation.
+address: 192.168.1.0/24
+# List of addresses to exclude
+exclude:
+    - '192.168.1.0'
+# Enable/disable scanning for open ports; poor performance when scanning all ports
+ports: False
+
+# At least one of ipv4 or ipv6 is required to be True, both can be True, but they cannot both be False.
+# Use IPv4 type addresses
+ipv4: True
+# Use IPv6 type addresses
+ipv6: False
+
+# Create vars from jinja2 expressions. (dictionary)
+compose:
+    open_ports_exist: "{{ ports | count }}"
+# Add hosts to group based on Jinja2 conditionals (dictionary)
+groups:
+    'ports_open': "{{ ports is defined }}"
+# Add hosts to group based on the values of a variable. (list)
+keyed_groups:
+- key: ports | default("none")
+  parent_group: ports
+  prefix: port
 ```
