@@ -1,5 +1,9 @@
 # Ansible Inventory
 
+TODO: Mention that it's recommended to leverage the UUID when pulling hosts into Ansible to ensure unique records.
+
+TODO: Test using `auto` inventory plugin as described here:
+
 Customers are continually moving to the cloud and yet still using their existing on-premise platform. This brings the interesting challenge of managing the inventories from different sources. Ansible brings a lot of power to not only manage your dynamic inventories but also allows a central place to manage your configuration (variables/facts) on each platform, environment, application stack, etc. In fact it can all be managed nicely within one repo. This can help emphasize your standards as well as expose some of your unicorn environments or applications.
 
 This repo holds example inventory structures for both static and dynamic inventories across multi-platforms and multi-sources.
@@ -112,6 +116,13 @@ When Ansible Tower synchronizes an Inventory Source, it actually runs a job. The
 Disable Ansible Tower to remove temporary folders for manual analysis after the jobs has failed. The temporary directory `/tmp/awx_JOBID_xxxxx` that is created during job run are automatically removed after the job completion. By setting `AWX_CLEANUP_PATHS=False` we can force that temporary runtime directory to persist after the job run for if further analysis/debug is required.
 
 https://access.redhat.com/solutions/5688351
+
+## Writing Inventory Plugins
+
+[Write your own Red Hat Ansible Tower inventory plugin](https://developers.redhat.com/blog/2021/03/10/write-your-own-red-hat-ansible-tower-inventory-plugin#a_sample_inventory_script)
+
+[Developing dynamic inventory](https://docs.ansible.com/ansible/latest/dev_guide/developing_inventory.html#developing-an-inventory-plugin)
+
 
 ## Author and Licensing
 
