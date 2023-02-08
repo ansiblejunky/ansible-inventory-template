@@ -1,0 +1,20 @@
+---
+# Configuration for [ansible-lint](https://ansible-lint.readthedocs.io/configuring/#configuration-file)
+# Source of truth on this configuration is located here:
+# https://github.com/ansiblejunky/ansible-project-template/blob/master/.ansible-lint
+
+use_default_rules: true
+skip_list:
+- name[missing]
+- name[play]
+- yaml[new-line-at-end-of-file]
+- fqcn-builtins
+
+# parseable output in the format of pep8
+parseable: true
+
+# quieter, although not silent output
+quiet: false
+
+# verbosity setting (currently 0 and 1 are supported; displays `examining file` messages
+verbosity: 0

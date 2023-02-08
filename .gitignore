@@ -1,7 +1,7 @@
-# Do not version control the collections downloaded by ansible-galaxy command
-collections/ansible_collections
+ansible_collections
+ansible.log
+facts.json
+__pycache__
 
 # Others
 .vmware*
-
-__pycache__

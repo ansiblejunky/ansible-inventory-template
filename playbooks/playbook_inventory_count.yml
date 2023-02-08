@@ -1,0 +1,15 @@
+---
+# Description:
+#   To get a count of all target nodes, use the following commands.
+# Example:
+#   ansible-playbook -i hosts/azure/dev/ inventory_count.yml
+- name: Show the total count of hosts in the dynamic inventory
+  hosts: all
+  gather_facts: false
+  connection: local
+
+  tasks:
+  - name: Print total host count
+    debug:
+      msg: "Total hosts: {{ groups['all'] | length }}"
+    run_once: true
