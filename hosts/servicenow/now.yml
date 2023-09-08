@@ -1,0 +1,16 @@
+plugin: servicenow.servicenow.now
+host: servicenow.mydomain.com
+username: admin
+password: password
+fields: [name,host_name,fqdn,ip_address,sys_class_name, install_status, classification,vendor]
+keyed_groups:
+  - key: sn_classification | lower
+    prefix: 'env'
+  - key: sn_vendor | lower
+    prefix: ''
+    separator: ''
+  - key: sn_sys_class_name | lower
+    prefix: ''
+    separator: ''
+  - key: sn_install_status | lower
+    prefix: 'status'

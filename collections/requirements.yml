@@ -29,3 +29,5 @@ collections:
     # https://github.com/ansible-collections/google.cloud
     - name: google.cloud
       version: 1.0.2
+
+    - name: servicenow.itsm

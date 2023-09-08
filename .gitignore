@@ -5,3 +5,5 @@ __pycache__
 
 # Others
 .vmware*
+.DS_Store
+.vscode
