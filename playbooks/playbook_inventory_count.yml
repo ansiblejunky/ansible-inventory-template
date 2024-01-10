@@ -9,7 +9,7 @@
   connection: local
 
   tasks:
-  - name: Print total host count
-    debug:
-      msg: "Total hosts: {{ groups['all'] | length }}"
-    run_once: true
+    - name: Print total host count
+      ansible.builtin.debug: # noqa run-once[task]
+        msg: "Total hosts: {{ groups['all'] | length }}"
+      run_once: true

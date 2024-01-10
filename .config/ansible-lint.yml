@@ -6,13 +6,14 @@
 use_default_rules: true
 
 skip_list:
-  - name[missing]
-  - name[play]
   - yaml[new-line-at-end-of-file]
-  - fqcn-builtins
   - yaml[colons]
+  - name[casing]
 
 warn_list:
+  - name[missing]
+  - name[play]
+  - fqcn-builtins
   - yaml[document-start]
   - yaml[brackets]
   - yaml[braces]
@@ -33,3 +34,6 @@ quiet: false
 
 # verbosity setting (currently 0 and 1 are supported; displays `examining file` messages
 verbosity: 0
+
+exclude_paths:
+  - collections/ansible_collections

@@ -5,7 +5,7 @@ The challenge of managing multiple inventory sources spread across on-premise an
 There are 2 main goals for this repository:
 
 - Act as a config management database (CMDB)
-- Act as a single source of truth
+- Establish a single source of truth for infrastructure, pulling from multiple sources across multiple onprem and cloud platforms
 
 This repository has the following structure:
 
@@ -18,7 +18,6 @@ TODO: Test using `auto` inventory plugin as described here:
 TODO: Rewrite this article into this repo using animated GIFs etc!
 - [Digital Ocean - How to Manage Multistage Environments with Ansible](https://www.digitalocean.com/community/tutorials/how-to-manage-multistage-environments-with-ansible)
 TODO: Add information to setup on AAP using Project, Credential(s), Credential Type(s), Inventory, Inventory Source(s)
-TODO: Maybe this is a blog instead of the README
 TODO: Use execution environment and ansible-navigator instead and possibly remove the `galaxy` folder? except maybe for an ansible role?
 
 ## Inventory

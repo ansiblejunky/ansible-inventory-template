@@ -10,11 +10,11 @@ validate_certs: False
 
 # Using tags from VMware we need to do the following:
 # - `with_tags` must be enabled
-# - vsphere automation sdk must be installed within python virtual environment 
+# - vsphere automation sdk must be installed within python virtual environment
 with_tags: True
 
 # Enabled properties that can be used in other expressions in this config
-# 
+#
 properties:
 - 'name'
 - 'config.name'

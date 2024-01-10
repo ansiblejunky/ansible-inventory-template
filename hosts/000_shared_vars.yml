@@ -6,4 +6,3 @@ acme_apache_port: 80
 # Example - setting production systems
 acme_servicenow_url: https://servicenow.example.com
 acme_servicenow_port: 443
-
